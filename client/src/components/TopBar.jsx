@@ -17,9 +17,10 @@ export function TopBar(){
             </div>
 
             <div className="h-10 w-px bg-gray-300 ml-4 mr-6"></div>
-
+            <div className="gap-2">
             <TopELementWIthRound title={"Signin"} filled={false}/>
             <TopELementWIthRound title={"Join now"} filled={true}/>
+            </div>
         </div>
     </div>
 }

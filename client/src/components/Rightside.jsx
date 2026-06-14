@@ -1,10 +1,12 @@
+import homeImg from "../assets/homeImg.svg";
+
 export function Rightside() {
   return (
-    <div className="w-[50%]">
+    <div className="hidden md:block w-full md:w-1/2 lg:w-[50%] px-4 md:px-0">
       <img
-        src="https://static.licdn.com/aero-v1/sc/h/dxf91zhqd2z6b0bwg85ktm5s4"
+        src={homeImg}
         alt="Hero"
-        className="w-full"
+        className="w-full h-auto"
       />
 
     </div>

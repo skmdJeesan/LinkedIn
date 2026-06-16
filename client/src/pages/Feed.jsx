@@ -18,6 +18,8 @@ const Feed = () => {
   let { serverUrl } = useContext(authDataContext)
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
+  let [frontendProfileImg, setFrontendProfileImg] = useState(userData ? userData.profileImage : dp)
+  let [frontendCoverImg, setFrontendCoverImg] = useState(userData ? userData.coverImage : '')
 
   const handleLogout = async () => {
     setLoading(true)
@@ -51,12 +53,12 @@ const Feed = () => {
     //   </div>
     // </div>
 
-    <div className='px-10 bg-[#F4F2EE] min-h-screen py-px'>
+    <div className='px-2 md:px-10 bg-[#F4F2EE] min-h-screen w-full flex flex-col lg:flex-row items-start justify-center gap-5 pt-14 lg:pt-20'>
 
-      <TopBar2/>
+      <TopBar2 />
       {edit && <EditProfile />}
 
-      <h1 className='text-2xl font-bold mb-1 mt-14'>Welcome to the Feed, <span className='font-bold text-[#0077B6]'>{userData ? userData.lastName : 'Guest'}!</span></h1>
+      {/* <h1 className='text-2xl font-bold mb-1 mt-14'>Welcome to the Feed, <span className='font-bold text-[#0077B6]'>{userData ? userData.lastName : 'Guest'}!</span></h1>
       <p className='text-gray-600 mb-2'>Here's what's happening with your network.</p>
       <div className="flex items-center gap-3">
         <button onClick={handleLogout}
@@ -67,8 +69,35 @@ const Feed = () => {
           className='bg-blue-500 text-white py-2 px-4 rounded-xl hover:bg-blue-600 cursor-pointer'>
           {loading ? <Loader2 className='animate-spin' size={20} /> : 'Edit Profile'}
         </button>
+      </div> */}
+
+
+      <div className="w-full md:w-[25%] min-h-50 bg-white shadow-lg rounded-lg relative pb-2">
+        {/* Cover Image */}
+        <div className="w-full h-28 bg-gray-500 rounded-t-lg overflow-hidden">
+          <img src={frontendCoverImg} alt="" className="w-full h-full bg-cover rounded" />
+        </div>
+
+        {/* Profile Image */}
+        <div className="h-20 w-20 rounded-full absolute top-16 left-8">
+          <img src={frontendProfileImg} alt="" className="w-full h-full bg-cover rounded-full" />
+        </div>
+
+        <h1 className="mt-10 ml-4 font-semibold">{userData.firstName + ' ' + userData.lastName}</h1>
+        <p className="ml-4 text-base text-gray-600">{userData.headline}</p>
+        <p className="ml-4 text-base text-gray-600">{userData.education[0].college + ', ' + userData.location}</p>
+
+        <button onClick={() => setEdit(true)}
+          className='mt-4 ml-8 w-3/4 border border-blue-500 text-blue-500 hover:bg-blue-500/10 py-1.5 px-4 rounded-full cursor-pointer flex items-center justify-center'>
+          {loading ? <Loader2 className='animate-spin' size={20} /> : 'Edit Profile'}
+        </button>
+
       </div>
-      
+
+      <div className="w-full md:w-[50%] min-h-50 bg-white shadow-lg rounded-lg p-2">posts</div>
+      <div className="w-full md:w-[25%] min-h-50 bg-white shadow-lg rounded-lg p-2">news or connections</div>
+
+
     </div>
   )
 }

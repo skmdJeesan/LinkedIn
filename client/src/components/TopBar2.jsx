@@ -11,7 +11,7 @@ import axios from "axios";
 import { authDataContext } from "../context/AuthContext";
 
 export function TopBar2() {
-  let {userData} = useContext(userDataContext)
+  let { userData } = useContext(userDataContext)
   let { serverUrl } = useContext(authDataContext)
   let [frontendProfileImg, setFrontendProfileImg] = useState(userData ? userData.profileImage : dp)
   let [loading, setLoading] = useState(false)
@@ -32,7 +32,7 @@ export function TopBar2() {
   }
 
   return (
-    <nav className="bg-white border-b border-gray-200 fixed top-0 left-0 z-500 w-full">
+    <nav className="bg-white border-b border-gray-200 fixed top-0 left-0 z-400 w-full">
       <div className="w-full mx-auto px-4 md:px-8 h-14 flex items-center justify-between">
 
         {/* Left Section */}
@@ -64,11 +64,11 @@ export function TopBar2() {
             flag='false'
           />
 
-          {/* <TopELement2
+          <TopELement2
             title="Messaging"
             icon={<MessageCircle size={22} />}
             flag='false'
-          /> */}
+          />
 
           <TopELement2
             title="Notifications"
@@ -76,12 +76,10 @@ export function TopBar2() {
             flag='true'
           />
 
-          <div className="relative">
-            <TopELementWIthDrop
-              title="Me"
-              icon={<CircleUserRound size={22} 
-              onClick={() => setShowProfile(prev => !prev)}/>}
-            />
+          <div className="relative" onClick={() => setShowProfile(prev => !prev)}>
+            <div className="h-10 w-10 cursor-pointer hover:scale-105">
+              <img src={frontendProfileImg} alt="" className="w-full h-full bg-cover rounded-full" />
+            </div>
             {showProfile && <div className="min-h-60 w-60 md:w-70 bg-white rounded-2xl shadow-2xl absolute top-16 right-0 lg:-right-20 flex flex-col px-2 py-4 sm:p-4 items-center gap-2">
               <div className="h-20 w-20 rounded-full">
                 <img src={frontendProfileImg} alt="" className="w-full h-full bg-cover rounded-full" />

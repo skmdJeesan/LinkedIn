@@ -17,7 +17,7 @@ export function TopBar2() {
   let [frontendProfileImg, setFrontendProfileImg] = useState(userData ? userData.profileImage : dp)
   let [loading, setLoading] = useState(false)
   let [showProfile, setShowProfile] = useState(false)
-  const navigate = useNavigate
+  const navigate = useNavigate()
 
   const handleLogout = async () => {
     setLoading(true)

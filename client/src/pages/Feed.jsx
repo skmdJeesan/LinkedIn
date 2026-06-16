@@ -4,8 +4,13 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { userDataContext } from '../context/UserContext'
 import { authDataContext } from '../context/AuthContext'
-import { Loader2 } from 'lucide-react'
+import { Loader2, Settings } from 'lucide-react'
 import { TopBar2 } from '../components/TopBar2'
+import { News } from '../components/News'
+import { CreatePostCard } from '../components/CreatePost'
+import { Analytics } from '../components/Analytics'
+import { ProfileCard } from '../components/ProfileCard'
+import { PostCard } from '../components/PostCard'
 
 const Feed = () => {
   const { userData, setUserData } = useContext(userDataContext)
@@ -36,8 +41,22 @@ const Feed = () => {
     //   </button>
     // </div>
 
-    <div>
+    <div className='bg-amber-50'>
       <TopBar2/>
+      <div className='grid grid-cols-1 md:grid-cols-12 gap-6 max-w-7xl mx-auto px-4 md:px-8 mt-6'>
+        <div className='md:col-span-3'>
+          <ProfileCard name={"Anshak"} title={"Full Stack Developer"} address={"Cooch Behar"} banner={"https://media.licdn.com/dms/image/v2/D5616AQHfnbmv7e3Q8A/profile-displaybackgroundimage-shrink_350_1400/profile-displaybackgroundimage-shrink_350_1400/0/1733593298188?e=1782950400&v=beta&t=A3zBWAfA7yMPbGoEwd7Ubme0E-SdHdjzdotf8e4Ehn8"} profilePic={"https://media.licdn.com/dms/image/v2/D5603AQGellffH2dxtA/profile-displayphoto-shrink_800_800/B56ZOiMHBbGoAg-/0/1733592905315?e=1782950400&v=beta&t=bSBm1M90-76a74KfC0SwkxlHUIqoOaHEnk9Uxfgnq7Y"}/>
+          {/* <Analytics/>
+          <Settings/> */}
+        </div>
+        <div className="md:col-span-6">
+          <PostCard/>
+          <CreatePostCard/>
+        </div>
+        <div className='hidden md:block md:col-span-3'>
+          <News/>
+        </div>
+      </div>
     </div>
   )
 }

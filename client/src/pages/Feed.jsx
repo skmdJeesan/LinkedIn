@@ -38,7 +38,7 @@ const Feed = () => {
   }
 
   return (
-    <div className='px-2 md:px-10 bg-[#F4F2EE] min-h-screen w-full flex flex-col lg:flex-row items-start justify-center gap-5 pt-14 lg:pt-20'>
+    <div className='px-2 md:px-10 bg-[#F4F2EE] min-h-screen w-full flex flex-col md:flex-row items-start justify-center gap-5 pt-14 lg:pt-20'>
 
       <TopBar2 />
       {edit && <EditProfile />}

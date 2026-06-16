@@ -3,9 +3,10 @@ import { useContext } from 'react'
 import { useRef } from 'react'
 import { userDataContext } from '../context/UserContext'
 import { authDataContext } from '../context/AuthContext'
-import { Image, ImageIcon, ImagePlay, ImagePlus, X } from 'lucide-react'
+import { Image, ImageIcon, ImagePlay, ImagePlus, Loader2, X } from 'lucide-react'
 import dp from '../assets/dp.jpg'
 import { useState } from 'react'
+import axios from 'axios'
 
 const CreatePost = () => {
   let { userData, setUserData, startPost, setStartPost } = useContext(userDataContext)
@@ -23,8 +24,20 @@ const CreatePost = () => {
     setFrontendImage(URL.createObjectURL(file))
   }
 
-  const handleCreatePost = () => {
-
+  const handleCreatePost = async () => {
+    setLoading(true)
+    try {
+      let formData = new FormData()
+      formData.append('description', description)
+      if(backendImage) formData.append('image', backendImage)
+      let res = await axios.post(serverUrl + '/api/post/create', formData, {withCredentials: true})
+      console.log(res.data)
+      setLoading(false)
+      setStartPost(false)
+    } catch (error) {
+      console.log(error)
+      setLoading(false)
+    }
   }
 
   return (
@@ -51,12 +64,13 @@ const CreatePost = () => {
         </div>
 
         <textarea placeholder='What do you want to talk about?'
+          value={description} onChange={(e) => setDescription(e.target.value)}
           className={`text-lg resize-none w-full ${frontendImage ? 'h-40' : 'h-60'} outline-none border-none p-2`}
         />
 
-        <div className="overflow-hidden w-full h-65 flex items-center justify-center rounded-md ">
-          <img src={frontendImage || ''} alt="Image" className="w-3/4 h-full bg-cover rounded-md" />
-        </div>
+        {frontendImage && <div className="overflow-hidden w-full h-60 flex items-center justify-center rounded-md ">
+          <img src={frontendImage || ''} alt="Image" className="w-full md:w-1/2 h-full bg-cover" />
+        </div>}
 
         <div className="border-b-2 pb-1.5 pl-2 border-gray-300">
           <ImagePlus className='text-gray-600 cursor-pointer' size={22} onClick={() => image.current.click()} />

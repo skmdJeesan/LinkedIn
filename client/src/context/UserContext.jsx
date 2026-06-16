@@ -10,6 +10,7 @@ const UserContext = ({ children }) => {
   const [userData, setUserData] = useState(null)
   const [edit, setEdit] = useState(false)
   const [startPost, setStartPost] = useState(false)
+  const [posts, setPosts] = useState([])
 
   const fetchUserData = async () => {
     try {
@@ -21,8 +22,19 @@ const UserContext = ({ children }) => {
     }
   };
 
+  const fetchAllPosts = async () => {
+    try {
+      const res = await axios.get(`${serverUrl}/api/post/get-all`, {withCredentials: true})
+      setPosts(res.data)
+    } catch (error) {
+      console.error('Error fetching all posts:', error);
+      setPosts(null); // Set userData to null if there's an error fetching data
+    }
+  }
+
   useEffect(() => {
     fetchUserData();
+    fetchAllPosts()
   }, []);
 
   let value = {userData, setUserData, edit, setEdit, startPost, setStartPost}

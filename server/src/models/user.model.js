@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
   headline: {type: String, default: ''},
   skills: [{type: String}],
   education: [{college: {type: String}, degree: {type: String}, fieldOfStudy: {type: String}}],
-  location: {type: String},
+  location: {type: String, default: 'India'},
   gender: {type: String, enum: ['male', 'female', 'other']},
   experience: [{title: {type: String}, company: {type: String}, description: {type: String}}],
   connection: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]

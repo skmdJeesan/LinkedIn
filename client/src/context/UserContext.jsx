@@ -8,6 +8,7 @@ export const userDataContext = createContext();
 const UserContext = ({ children }) => {
   const serverUrl = useContext(authDataContext).serverUrl
   const [userData, setUserData] = useState(null)
+  const [edit, setEdit] = useState(false)
 
   const fetchUserData = async () => {
     try {
@@ -23,7 +24,7 @@ const UserContext = ({ children }) => {
     fetchUserData();
   }, []);
 
-  let value = {userData, setUserData}
+  let value = {userData, setUserData, edit, setEdit}
 
   return (
     <div>

@@ -6,11 +6,11 @@ import { userDataContext } from '../context/UserContext'
 import { authDataContext } from '../context/AuthContext'
 import { Loader2, Settings } from 'lucide-react'
 import { TopBar2 } from '../components/TopBar2'
-import { News } from '../components/News'
-import { CreatePostCard } from '../components/CreatePost'
-import { Analytics } from '../components/Analytics'
-import { ProfileCard } from '../components/ProfileCard'
-import { PostCard } from '../components/PostCard'
+// import { News } from '../components/News'
+// import { CreatePostCard } from '../components/CreatePost'
+// import { Analytics } from '../components/Analytics'
+// import { ProfileCard } from '../components/ProfileCard'
+// import { PostCard } from '../components/PostCard'
 import EditProfile from '../components/EditProfile'
 
 const Feed = () => {
@@ -51,10 +51,10 @@ const Feed = () => {
     //   </div>
     // </div>
 
-    <div className='p-10'>
+    <div className='px-10'>
       <TopBar2/>
       {edit && <EditProfile />}
-      <h1 className='text-2xl font-bold mb-1'>Welcome to the Feed, <span className='font-bold text-[#0077B6]'>{userData ? userData.lastName : 'Guest'}!</span></h1>
+      <h1 className='text-2xl font-bold mb-1 mt-4'>Welcome to the Feed, <span className='font-bold text-[#0077B6]'>{userData ? userData.lastName : 'Guest'}!</span></h1>
       <p className='text-gray-600 mb-2'>Here's what's happening with your network.</p>
       <div className="flex items-center gap-3">
         <button onClick={handleLogout}

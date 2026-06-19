@@ -121,7 +121,7 @@ const PostCard = ({ post }) => {
                             <div className="flex items-start justify-between px-1">
                                 <div className="flex gap-2 items-start cursor-pointer" onClick={() => handleGetProfile(author.username)}>
                                     <div className="h-10 w-10 rounded-full">
-                                        <img src={c.user?.profileImage || dp} alt="" className="w-full h-full bg-cover rounded-full" />
+                                        <img src={c.user?.profileImage || dp} alt="" className="w-full h-full object-cover object-center rounded-full" />
                                     </div>
                                     <div className="">
                                         <h1 className="text-base font-semibold">{c.user?.firstName + ' ' + c.user?.lastName}</h1>

@@ -80,6 +80,7 @@ export function TopBar2() {
             title="Notifications"
             icon={<Bell size={22} />}
             flag='true'
+            onClick={() => navigate('/notification')}
           />
 
           <div className="relative" onClick={() => setShowProfile(prev => !prev)}>

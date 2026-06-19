@@ -3,7 +3,7 @@ import { createContext } from 'react';
 
 export const authDataContext = createContext();
 const AuthContext = ({children}) => {
-  const serverUrl = 'http://localhost:8000'
+  const serverUrl = 'https://linkedin-server-zgza.onrender.com'
   let value = {
     serverUrl
   }

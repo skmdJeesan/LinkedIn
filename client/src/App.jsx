@@ -11,6 +11,8 @@ import MyProfile from './components/MyProfile'
 import UserProfile from './components/UserProfile'
 import MyPosts from './components/MyPosts'
 import Notification from './pages/Notification'
+import Messaging from './pages/Messaging'
+import Jobs from './pages/Jobs'
 
 function App() {
   const userData = useContext(userDataContext).userData
@@ -20,6 +22,8 @@ function App() {
       <Route path='/feed' element={userData ? <Feed /> : <Navigate to="/login" />}/>
       <Route path='/network' element={userData ? <Network /> : <Navigate to="/login" />}/>
       <Route path='/notification' element={userData ? <Notification /> : <Navigate to="/login" />}/>
+      <Route path='/messaging' element={userData ? <Messaging /> : <Navigate to="/login" />}/>
+      <Route path='/jobs' element={userData ? <Jobs /> : <Navigate to="/login" />}/>
       <Route path='/profile/me' element={userData ? <MyProfile /> : <Navigate to="/login" />}/>
       <Route path='/profile/:username' element={userData ? <UserProfile /> : <Navigate to="/login" />}/>
       {/* <Route path='/feed' element={<Feed />}/> */}

@@ -49,7 +49,7 @@ export function SearchBox() {
         </div>
       )}
       {click && (
-        <div className="absolute top-14 md:top-15 left-0 lg:left-26 w-full lg:w-120 bg-white shadow-xl rounded-xl flex flex-col gap-3 p-4">
+        <div className="absolute top-14 md:top-15 left-0 lg:left-26 w-full lg:w-120 bg-white shadow-xl rounded-xl flex flex-col gap-3 p-4 min-h-80 overflow-auto hide-scrollbar">
           {(searchUsersData.length == 0 || searchInput.length == 0)
             ? <div className="text-gray-600 text-xl text-center">{searchInput.length == 0 ? 'Try Searching for' : 'No Result Found!'}</div>
             : searchUsersData.map((user, i) => (

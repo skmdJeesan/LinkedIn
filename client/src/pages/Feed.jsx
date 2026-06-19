@@ -44,7 +44,7 @@ const Feed = () => {
   const handleGetSuggestedUser = async () => {
     try {
       let res = await axios.get(`${serverUrl}/api/user/suggested-user`, { withCredentials: true })
-      console.log(res.data)
+      // console.log(res.data)
       setSuggestedUser(res.data)
     } catch (error) {
       console.log(error)
@@ -56,13 +56,13 @@ const Feed = () => {
   }, [])
 
   return (
-    <div className='px-2 md:px-8 bg-[#F4F2EE] min-h-screen w-full flex flex-col md:flex-row items-start justify-center gap-4 md:gap-5 pt-14 lg:pt-20'>
+    <div className='px-2 md:px-8 bg-[#F4F2EE] min-h-screen w-full flex flex-col items-center pt-16 lg:pt-20'>
 
       <TopBar2 />
       {edit && <EditProfile />}
 
       {/* Profile Card */}
-      <div className="w-full md:w-[20%] relative md:fixed left-0 md:left-14">
+      <div className="w-full md:w-[20%] relative md:fixed left-0 md:left-17">
         <div className="w-full min-h-50 bg-white shadow-sm rounded-lg  pb-2">
           {/* Cover Image */}
           <div className="w-full h-28 bg-gray-500 rounded-t-lg overflow-hidden">
@@ -100,15 +100,15 @@ const Feed = () => {
           </div>
         </div>
         <div className="hidden md:flex flex-col gap-2 bg-white mt-2 rounded-lg shadow-md items-start py-4 px-6">
-          <div className="font-semibold text-sm cursor-pointer flex gap-4 cursor-pointer items-center"><LucideSave size={16} />Saved Items</div>
-          <div className="font-semibold text-sm cursor-pointer flex gap-4 cursor-pointer items-center"><GroupIcon size={16} />Groups</div>
-          <div className="font-semibold text-sm cursor-pointer flex gap-4 cursor-pointer items-center"><Newspaper size={16} />Newsletters</div>
-          <div className="font-semibold text-sm cursor-pointer flex gap-4 cursor-pointer items-center"><Calendar size={16} />Events</div>
+          <div className="font-semibold text-sm flex gap-4 cursor-pointer items-center"><LucideSave size={16} />Saved Items</div>
+          <div className="font-semibold text-sm flex gap-4 cursor-pointer items-center"><GroupIcon size={16} />Groups</div>
+          <div className="font-semibold text-sm flex gap-4 cursor-pointer items-center"><Newspaper size={16} />Newsletters</div>
+          <div className="font-semibold text-sm flex gap-4 cursor-pointer items-center"><Calendar size={16} />Events</div>
         </div>
       </div>
 
       {startPost && <CreatePost />}
-      <div className="ml-0 md:ml-[22%] w-full md:w-[50%] min-h-50 bg-[#F4F2EE] rounded-lg p-1 flex flex-col gap-5">
+      <div className="w-full md:w-[50%] min-h-50 bg-[#F4F2EE] rounded-lg mt-3 md:mt-0 flex flex-col gap-4">
 
         {/* Start a Post Button */}
         <div className="flex items-center justify-center gap-4 w-full bg-white px-2 py-4 rounded-lg shadow-sm">
@@ -130,7 +130,7 @@ const Feed = () => {
 
       </div>
 
-      <div className="w-full md:w-[22%] min-h-50 bg-white shadow-sm rounded-lg py-2 hidden md:flex flex-col gap-4">
+      <div className="w-full md:w-[22%] min-h-50 bg-white shadow-sm rounded-lg py-2 hidden md:flex flex-col gap-4 md:fixed right-0 md:right-12">
         <h1 className="text-gray-600 font-bold text-lg ml-4">Suggestions</h1>
         {suggestedUser.length > 0 && suggestedUser.map((user, i) => (
           <div key={i} className="flex items-start justify-between px-4">

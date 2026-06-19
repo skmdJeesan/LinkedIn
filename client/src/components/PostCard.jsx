@@ -4,12 +4,10 @@ import { Heart, HeartPlus, MessageCircle, Send, SendHorizonal } from 'lucide-rea
 import moment from 'moment'
 import axios from 'axios'
 import { authDataContext } from '../context/AuthContext'
-import { userDataContext } from '../context/UserContext'
-import { io } from "socket.io-client";
+import { socket, userDataContext } from '../context/UserContext'
 import ConnectionBtn from './ConnectionBtn'
-import { Link } from 'react-router-dom'
-
-const socket = io("http://localhost:8000");
+import { Link, useLocation } from 'react-router-dom'
+import PostDeleteBtn from './PostDeleteBtn'
 
 const PostCard = ({ post }) => {
     let author = post.author
@@ -18,6 +16,7 @@ const PostCard = ({ post }) => {
     let [comments, setComments] = useState(post.comment || [])
     let [openComments, setOpenComments] = useState(false)
     let [commentContent, setCommentContent] = useState('')
+    let location = useLocation()
     let { serverUrl } = useContext(authDataContext)
     let { userData, setUserData, fetchAllPosts, handleGetProfile } = useContext(userDataContext)
 
@@ -47,8 +46,10 @@ const PostCard = ({ post }) => {
     }, [post._id])
 
     useEffect(() => {
-        fetchAllPosts()
-    }, [likes, comments])
+        // fetchAllPosts()
+        setLikes(post.like)
+        setComments(post.comment)
+    }, [post.like, post.comment])
 
     const handleComment = async (e) => {
         e.preventDefault()
@@ -78,7 +79,9 @@ const PostCard = ({ post }) => {
                     </div>
                 </Link>
                 <div className="">
-                    {userData._id != author._id && <ConnectionBtn postAuthorId={author._id}/>}
+                    {location.pathname !== '/feed' && userData._id === author._id ? <PostDeleteBtn postId={post._id} /> : null}
+                    {location.pathname === '/feed' && userData._id !== author._id ? <ConnectionBtn postAuthorId={author._id} /> : null}
+                    {location.pathname !== '/feed' && userData._id !== author._id ? <ConnectionBtn postAuthorId={author._id} /> : null}
                 </div>
             </div>
 

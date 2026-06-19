@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { TopELementWIthDrop } from "../components/TopElementWIthDrop";
 import { TopELement2 } from "./TopElement2";
@@ -10,7 +10,7 @@ import { Bell, BriefcaseBusiness, CircleUserRound, Grid3x3, Home, Loader2, Messa
 import { userDataContext } from "../context/UserContext";
 import axios from "axios";
 import { authDataContext } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export function TopBar2() {
   let { userData, setUserData } = useContext(userDataContext)
@@ -19,6 +19,30 @@ export function TopBar2() {
   let [loading, setLoading] = useState(false)
   let [showProfile, setShowProfile] = useState(false)
   const navigate = useNavigate()
+  const location = useLocation()
+  const [notifications, setNotifications] = useState([])
+
+  const pathname = location.pathname
+  let selectedTab = ''
+  if (pathname === '/' || pathname.startsWith('/feed')) selectedTab = 'home'
+  else if (pathname.startsWith('/network')) selectedTab = 'network'
+  else if (pathname.startsWith('/messaging')) selectedTab = 'messaging'
+  else if (pathname.startsWith('/notification')) selectedTab = 'notifications'
+  else if (pathname.startsWith('/jobs')) selectedTab = 'jobs'
+
+  const handleGetNotifications = async () => {
+    try {
+      let res = await axios.get(`${serverUrl}/api/notification/get-all/`, { withCredentials: true })
+      // console.log(res.data)
+      setNotifications(res.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    handleGetNotifications()
+  }, [notifications])
 
   const handleLogout = async () => {
     setLoading(true)
@@ -33,6 +57,8 @@ export function TopBar2() {
       setLoading(false)
     }
   }
+
+  let notiCnt = notifications.length
 
   return (
     <nav className="bg-white border-b border-gray-200 fixed top-0 left-0 z-400 w-full">
@@ -51,36 +77,49 @@ export function TopBar2() {
         {/* Right Section */}
         <div className="flex items-center gap-1 md:gap-4">
           <TopELement2
+            name="home"
             title="Home"
             icon={<Home size={22} />}
             flag='false'
+            selectedTab={selectedTab}
             onClick={() => navigate('/feed')}
           />
 
           <TopELement2
+            name="network"
             title="My Network"
             icon={<Workflow size={22} />}
             flag='false'
+            selectedTab={selectedTab}
             onClick={() => navigate('/network')}
           />
 
           <TopELement2
+            name="jobs"
             title="Jobs"
             icon={<BriefcaseBusiness size={22} />}
             flag='false'
+            selectedTab={selectedTab}
+            onClick={() => navigate('/jobs')}
           />
 
-          <TopELement2
+          <TopELement2 
+            name="messaging"
             title="Messaging"
             icon={<MessageCircle size={22} />}
             flag='false'
+            selectedTab={selectedTab}
+            onClick={() => navigate('/messaging')}
           />
 
           <TopELement2
+            name="notifications"
             title="Notifications"
             icon={<Bell size={22} />}
             flag='true'
+            selectedTab={selectedTab}
             onClick={() => navigate('/notification')}
+            notiCnt={notiCnt}
           />
 
           <div className="relative" onClick={() => setShowProfile(prev => !prev)}>
@@ -98,7 +137,7 @@ export function TopBar2() {
               </button>
               <div className="h-px bg-gray-300 w-full"></div>
               <div className="flex gap-3 text-sm sm:text-base w-3/4 rounded-full hover:bg-blue-500/10 py-2 px-4 cursor-pointer" onClick={() => navigate('/network')}><Workflow size={22} /> My Networks</div>
-              <div className="flex gap-3 text-sm sm:text-base w-3/4 rounded-full hover:bg-blue-500/10 py-2 px-4 cursor-pointer"><BriefcaseBusiness size={22} /> Jobs</div>
+              <div className="flex gap-3 text-sm sm:text-base w-3/4 rounded-full hover:bg-blue-500/10 py-2 px-4 cursor-pointer" onClick={() => navigate('/messaging')}><MessageCircle size={22} /> Messaging</div>
               <button onClick={handleLogout}
                 className='border border-red-500 text-red-500 hover:bg-red-500/10 py-1.5 w-3/4 px-4 rounded-full cursor-pointer flex items-center justify-center'>
                 {loading ? <Loader2 className='animate-spin' size={20} /> : 'Log Out'}

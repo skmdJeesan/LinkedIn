@@ -4,7 +4,9 @@ import { useContext } from 'react';
 import { authDataContext } from './AuthContext';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { io } from "socket.io-client";
 
+export const socket = io("http://localhost:8000");
 export const userDataContext = createContext();
 const UserContext = ({ children }) => {
   const serverUrl = useContext(authDataContext).serverUrl

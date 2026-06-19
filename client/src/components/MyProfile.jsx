@@ -72,18 +72,6 @@ const MyProfile = () => {
                   {headline}
                 </p>
                 <div className='mt-5 grid gap-4 sm:grid-cols-2'>
-                  {/* <div className='rounded-2xl bg-slate-50 p-4'>
-                    <p className='text-xs uppercase tracking-[0.18em] text-gray-500'>Location</p>
-                    <p className='mt-2 text-sm text-gray-800'>
-                      {userData?.location || 'Not added yet'}
-                    </p>
-                  </div>
-                  <div className='rounded-2xl bg-slate-50 p-4'>
-                    <p className='text-xs uppercase tracking-[0.18em] text-gray-500'>Gender</p>
-                    <p className='mt-2 text-sm text-gray-800'>
-                      {userData?.gender || 'Not added yet'}
-                    </p>
-                  </div> */}
                   <div className='rounded-2xl sm:col-span-2 border border-gray-300 px-8 py-4 relative'>
                     <p className='text-lg font-semibold flex items-center gap-2'><Gem size={18} /> Top Skills</p>
                     <p className='text-base text-gray-800 pl-6'>

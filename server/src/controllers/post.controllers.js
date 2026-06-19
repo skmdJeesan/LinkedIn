@@ -21,6 +21,16 @@ export const createPost = async (req, res) => {
   }
 }
 
+export const deletePost = async (req, res) => {
+  try {
+    let { postId } = req.params
+    await Post.findByIdAndDelete(postId)
+    return res.status(200).json({ message: 'Post deleted successfully!' })
+  } catch (error) {
+    return res.status(500).json({ message: 'delete post error!' })
+  }
+}
+
 export const getAllPost = async (req, res) => {
   try {
     let posts = await Post.find()
@@ -47,12 +57,14 @@ export const like = async (req, res) => {
       post.like = post.like.filter((id) => id != userId)
     } else {
       post.like.push(userId)
-      await Notification.create({
+      if(post.author != userId) {
+        await Notification.create({
         receiver: post.author,
         relatedUser: userId,
         relatedPost: postId,
         type: 'like'
       })
+      }
     }
 
     await post.save()
@@ -76,14 +88,15 @@ export const comment = async (req, res) => {
       path: 'comment.user',
       select: 'firstName lastName profileImage headline'
     }).sort({ updatedAt: -1 })
-    await Notification.create({
+    if(post.author != userId) {
+      await Notification.create({
       receiver: post.author,
       relatedUser: userId,
       relatedPost: postId,
       type: 'comment'
     })
+    }
     await post.save()
-
     io.emit('commentUpdated', { postId, comments: post.comment })
     return res.status(200).json(post)
   } catch (error) {

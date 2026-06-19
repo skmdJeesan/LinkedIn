@@ -9,7 +9,7 @@ import { useState } from 'react'
 import axios from 'axios'
 
 const CreatePost = () => {
-  let { userData, setUserData, startPost, setStartPost } = useContext(userDataContext)
+  let { userData, setUserData, startPost, setStartPost, fetchAllPosts } = useContext(userDataContext)
   let { serverUrl } = useContext(authDataContext)
   let image = useRef()
   const frontendProfileImg = userData?.profileImage || dp
@@ -31,7 +31,8 @@ const CreatePost = () => {
       formData.append('description', description)
       if(backendImage) formData.append('image', backendImage)
       let res = await axios.post(serverUrl + '/api/post/create', formData, {withCredentials: true})
-      console.log(res.data)
+      // console.log(res.data)
+      fetchAllPosts()
       setLoading(false)
       setStartPost(false)
     } catch (error) {

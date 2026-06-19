@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { io } from "socket.io-client";
 
-export const socket = io("http://localhost:8000");
+export const socket = io("https://linkedin-server-zgza.onrender.com");
 export const userDataContext = createContext();
 const UserContext = ({ children }) => {
   const serverUrl = useContext(authDataContext).serverUrl

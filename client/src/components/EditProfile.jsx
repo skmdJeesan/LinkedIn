@@ -110,10 +110,10 @@ const EditProfile = () => {
         <X className='font-bold cursor-pointer bg-white rounded-full p-1 w-7 h-7' size={20} />
       </div>
 
-      <div className="bg-white w-[90%] max-w-150 h-150 shadow-xl rounded-2xl absolute mt-5 md:mt-0 z-200 p-2 overflow-auto hide-scrollbar">
+      <div className="bg-white w-[90%] max-w-160 h-150 shadow-xl rounded-2xl absolute mt-5 md:mt-0 z-200 overflow-auto hide-scrollbar">
         {/* Cover Image */}
-        <div className="w-full h-38 bg-gray-500 rounded-lg overflow-hidden">
-          <img src={frontendCoverImg} alt="" className="w-full h-full bg-cover rounded" />
+        <div className="w-full h-38 bg-gray-500 rounded-t-lg overflow-hidden">
+          <img src={frontendCoverImg} alt="" className="w-full h-full object-cover rounded" />
           <div onClick={() => coverImg.current.click()}
             className="absolute top-4 right-4 rounded-full flex items-center justify-center">
             <Camera size={20} className='font-bold cursor-pointer h-5 w-6 rounded-full text-white' />
@@ -122,7 +122,7 @@ const EditProfile = () => {
 
         {/* Profile Image */}
         <div className="h-20 w-20 rounded-full absolute top-28 left-8">
-          <img src={frontendProfileImg} alt="" className="w-full h-full bg-cover rounded-full" />
+          <img src={frontendProfileImg} alt="" className="w-full h-full object-cover object-center rounded-full" />
           <div onClick={() => profileImg.current.click()}
             className="absolute top-[65%] right-0 rounded-full flex items-center justify-center">
             <Plus size={16} className='font-bold cursor-pointer bg-blue-500 h-5 w-5 rounded-full p-1 text-white' />
@@ -130,7 +130,7 @@ const EditProfile = () => {
         </div>
 
         {/* Input details */}
-        <div className="w-full flex flex-col mt-12 p-2">
+        <div className="w-full flex flex-col mt-12 p-4">
           <h1 className="font-bold text-base">Basic info</h1>
           <div className="flex gap-4 mt-4">
             <input

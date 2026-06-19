@@ -36,10 +36,10 @@ export function TopBar2() {
 
   return (
     <nav className="bg-white border-b border-gray-200 fixed top-0 left-0 z-400 w-full">
-      <div className="w-full mx-auto px-4 md:px-8 h-14 flex items-center justify-between">
+      <div className="w-full mx-auto px-3 md:px-12 h-14 flex items-center justify-between">
 
         {/* Left Section */}
-        <div className="flex items-center gap-1 md:gap-2">
+        <div className="flex items-center gap-0 md:gap-2">
           <img
             onClick={() => navigate('/feed')}
             src={linkedInLogo} alt="LinkedIn"
@@ -88,10 +88,10 @@ export function TopBar2() {
             </div>
             {showProfile && <div className="min-h-60 w-60 md:w-70 bg-white rounded-2xl shadow-2xl absolute top-16 right-0 lg:-right-20 flex flex-col px-2 py-4 sm:p-4 items-center gap-2">
               <div className="h-20 w-20 rounded-full">
-                <img src={frontendProfileImg} alt="" className="w-full h-full bg-cover rounded-full" />
+                <img src={frontendProfileImg} alt="" className="w-full h-full object-cover object-center rounded-full" />
               </div>
               <h1 className="">{userData.firstName + ' ' + userData.lastName}</h1>
-              <button onClick={() => navigate('/profile')}
+              <button onClick={() => navigate('/profile/me')}
                 className='border border-blue-500 text-blue-500 hover:bg-blue-500/10 py-1.5 w-3/4 px-4 rounded-full cursor-pointer flex items-center justify-center'>
                 View Profile
               </button>

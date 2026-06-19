@@ -7,6 +7,7 @@ import { authDataContext } from '../context/AuthContext'
 import { userDataContext } from '../context/UserContext'
 import { io } from "socket.io-client";
 import ConnectionBtn from './ConnectionBtn'
+import { Link } from 'react-router-dom'
 
 const socket = io("http://localhost:8000");
 
@@ -18,7 +19,7 @@ const PostCard = ({ post }) => {
     let [openComments, setOpenComments] = useState(false)
     let [commentContent, setCommentContent] = useState('')
     let { serverUrl } = useContext(authDataContext)
-    let { userData, setUserData, fetchAllPosts } = useContext(userDataContext)
+    let { userData, setUserData, fetchAllPosts, handleGetProfile } = useContext(userDataContext)
 
     const handleLike = async () => {
         try {
@@ -63,17 +64,19 @@ const PostCard = ({ post }) => {
 
     return (
         <div className='w-full min-h-50 bg-white shadow-md rounded-md flex flex-col py-4'>
+
+            {/* profile card */}
             <div className="flex items-start justify-between px-4">
-                <div className="flex gap-3 items-start">
+                <Link to={`/profile/${author.username}`} className="flex gap-3 items-start cursor-pointer">
                     <div className="h-15 w-15 rounded-full">
-                        <img src={author.profileImage || dp} alt="" className="w-full h-full bg-cover rounded-full" />
+                        <img src={author.profileImage || dp} alt="" className="w-full h-full object-cover object-center rounded-full" />
                     </div>
                     <div className="">
                         <h1 className="text-lg font-semibold">{author.firstName + ' ' + author.lastName}</h1>
                         <h3 className="text-gray-600 text-base -mt-1">{author.headline}</h3>
                         <p className="text-xs -mt-1">{moment(post.createdAt).fromNow()}</p>
                     </div>
-                </div>
+                </Link>
                 <div className="">
                     {userData._id != author._id && <ConnectionBtn postAuthorId={author._id}/>}
                 </div>
@@ -83,12 +86,12 @@ const PostCard = ({ post }) => {
                 <div className={`${post.description == '' ? '' : read ? 'min-h-14' : 'h-14'} px-4 py-2 overflow-hidden`}>
                     <p className="">{post.description}</p>
                 </div>
-                {post.description && <div onClick={() => setRead(prev => !prev)}
+                {post.description.length > 200 && <div onClick={() => setRead(prev => !prev)}
                     className="text-sm font-semibold hover:text-blue-500 cursor-pointer px-4 w-fit">
                     {read ? 'Read less' : 'Read more..'}
                 </div>}
-                {post.image && <div className='mt-2'>
-                    <img src={post.image} alt="" className="" />
+                {post.image && <div className='mt-2 w-full h-60 md:h-100'>
+                    <img src={post.image} alt="" className="h-full w-full object-center object-cover" />
                 </div>}
             </div>
 
@@ -116,7 +119,7 @@ const PostCard = ({ post }) => {
                     {comments.map((c, i) => (
                         <div key={i} className="flex flex-col gap-1 mt-4 border-b border-b-gray-400 rounded-lg">
                             <div className="flex items-start justify-between px-1">
-                                <div className="flex gap-2 items-start">
+                                <div className="flex gap-2 items-start cursor-pointer" onClick={() => handleGetProfile(author.username)}>
                                     <div className="h-10 w-10 rounded-full">
                                         <img src={c.user?.profileImage || dp} alt="" className="w-full h-full bg-cover rounded-full" />
                                     </div>

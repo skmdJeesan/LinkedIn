@@ -1,23 +1,34 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { TopBar2 } from './TopBar2'
 import { userDataContext } from '../context/UserContext'
 import dp from '../assets/dp.jpg'
-import { Gem, MapPin, Pen, University } from 'lucide-react'
+import { Gem, MapPin, Pen, Plus, University } from 'lucide-react'
 import EditProfile from './EditProfile'
+import { useNavigate } from 'react-router-dom'
 
-const Profile = () => {
-  const { userData, edit, setEdit } = useContext(userDataContext)
+const MyProfile = () => {
+  const { userData, edit, setEdit, posts, setPosts } = useContext(userDataContext)
   const frontendProfileImg = userData?.profileImage || dp
   const frontendCoverImg = userData?.coverImage || ''
   const fullName = userData?.firstName ? `${userData.firstName} ${userData.lastName}` : userData?.username || 'Your Name'
   const headline = userData?.headline || 'Add a headline to tell people what you do.'
+  const navigate = useNavigate()
+  const [myPosts, setMyPosts] = useState([])
+
+  const fetchMyPosts = () => {
+    setMyPosts(posts.filter((p) => p.author._id === userData._id))
+  }
+
+  useEffect(() => {
+    fetchMyPosts()
+  }, [posts, userData])
 
   return (
     <div className='bg-[#F4F2EE] pt-14 lg:pt-20 min-h-screen w-full'>
       <TopBar2 />
       {edit && <EditProfile />}
       <div className='px-2 md:px-10 py-2'>
-        <div className='max-w-7xl mx-auto flex flex-col gap-5'>
+        <div className='max-w-6xl mx-auto flex flex-col gap-5'>
 
           <div className='bg-white shadow-sm rounded-xl overflow-hidden relative'>
             <div className='h-40 bg-gray-200 relative'>
@@ -27,10 +38,11 @@ const Profile = () => {
                 className='w-full h-full object-cover'
               />
               <div className='absolute left-6 -bottom-14'>
-                <div className='h-28 w-28 rounded-full border-4 border-white overflow-hidden bg-gray-200'>
+                <div className='h-28 w-28 rounded-full border-4 border-white overflow-hidden bg-gray-200 relative'>
                   <img src={frontendProfileImg} alt='Profile' className='w-full h-full object-cover' />
                 </div>
               </div>
+              <div onClick={() => setEdit(true)} className="absolute top-45 right-[88.5%] cursor-pointer z-200 w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center"><Plus size={22} className='text-white' /></div>
             </div>
             <div className='pt-16 pb-6 px-6'>
               <h1 className='text-2xl font-semibold'>{fullName}</h1>
@@ -49,9 +61,13 @@ const Profile = () => {
           </div>
 
           <div className='grid grid-cols-1 xl:grid-cols-[1.4fr_0.6fr] gap-5'>
+
             <div className='flex flex-col gap-5'>
               <section className='bg-white shadow-sm rounded-xl p-6'>
-                <h2 className='text-lg font-semibold'>About</h2>
+                <h2 className='text-lg font-semibold flex items-center gap-2'>
+                  About
+                  <div onClick={() => setEdit(true)} className="cursor-pointer"><Pen size={12} className='text-blue-500' /></div>
+                </h2>
                 <p className='mt-1 text-gray-700'>
                   {headline}
                 </p>
@@ -68,17 +84,21 @@ const Profile = () => {
                       {userData?.gender || 'Not added yet'}
                     </p>
                   </div> */}
-                  <div className='rounded-2xl sm:col-span-2 border border-gray-300 px-8 py-4'>
+                  <div className='rounded-2xl sm:col-span-2 border border-gray-300 px-8 py-4 relative'>
                     <p className='text-lg font-semibold flex items-center gap-2'><Gem size={18} /> Top Skills</p>
                     <p className='text-base text-gray-800 pl-6'>
                       {userData?.skills?.length ? userData.skills.join(' • ') : 'No skills added yet.'}
                     </p>
+                    <div onClick={() => setEdit(true)} className="absolute top-4 right-4 cursor-pointer"><Pen size={16} className='text-blue-500' /></div>
                   </div>
                 </div>
               </section>
 
               <section className='bg-white shadow-sm rounded-xl p-6'>
-                <h2 className='text-lg font-semibold'>Experience</h2>
+                <h2 className='text-lg font-semibold flex items-center gap-2'>
+                  Experience
+                  <div onClick={() => setEdit(true)} className="cursor-pointer"><Pen size={12} className='text-blue-500' /></div>
+                </h2>
                 <div className='mt-1 space-y-3'>
                   {userData?.experience?.length ? (
                     userData.experience.map((exp, index) => (
@@ -97,7 +117,10 @@ const Profile = () => {
               </section>
 
               <section className='bg-white shadow-sm rounded-xl p-6'>
-                <h2 className='text-lg font-semibold'>Education</h2>
+                <h2 className='text-lg font-semibold flex items-center gap-2'>
+                  Education
+                  <div onClick={() => setEdit(true)} className="cursor-pointer"><Pen size={12} className='text-blue-500' /></div>
+                </h2>
                 <div className='mt-1 flex flex-wrap gap-2'>
                   {userData?.education?.length ? (
                     userData.education.map((edu, index) => (
@@ -122,16 +145,18 @@ const Profile = () => {
               <section className='bg-white shadow-sm rounded-xl p-6'>
                 <h2 className='text-lg font-semibold'>Profile details</h2>
                 <div className='mt-2 text-sm text-gray-700'>
-                  <div className='bg-slate-50 p-2 flex items-start justify-between hover:border-b hover:border-b-blue-500 hover:text-blue-500'>
-                    <p className='text-base uppercase cursor-pointer '>See All Connections</p>
+                  <div onClick={() => navigate('/network')}
+                    className='bg-slate-50 p-2 flex items-start justify-between hover:border-b hover:border-b-blue-500 hover:text-blue-500'>
+                    <p className='text-base uppercase cursor-pointer'>See All Connections</p>
                     <p className='mt-1 font-semibold text-blue-500'>
                       {userData?.connection?.length ?? 0}
                     </p>
                   </div>
-                  <div className='bg-slate-50 p-2 flex items-start justify-between hover:border-b hover:border-b-blue-500 hover:text-blue-500'>
+                  <div onClick={() => navigate('/my-posts')}
+                    className='bg-slate-50 p-2 flex items-start justify-between hover:border-b hover:border-b-blue-500 hover:text-blue-500'>
                     <p className='text-base uppercase cursor-pointer '>See All Posts</p>
                     <p className='mt-1 font-semibold text-blue-500'>
-                      {userData?.post?.length ?? 0}
+                      {myPosts.length}
                     </p>
                   </div>
                   <div className='rounded-2xl bg-slate-50 p-2 '>
@@ -160,4 +185,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default MyProfile

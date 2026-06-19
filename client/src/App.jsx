@@ -7,19 +7,23 @@ import Login from './pages/Login'
 import { userDataContext } from './context/UserContext'
 import Feed from './pages/Feed'
 import Network from './components/Network'
-import Profile from './components/Profile'
+import MyProfile from './components/MyProfile'
+import UserProfile from './components/UserProfile'
+import MyPosts from './components/MyPosts'
 
 function App() {
   const userData = useContext(userDataContext).userData
   return <div>
-    <Routes>
+    <Routes >
       <Route path='/' element={<Home />}/>
       <Route path='/feed' element={userData ? <Feed /> : <Navigate to="/login" />}/>
       <Route path='/network' element={userData ? <Network /> : <Navigate to="/login" />}/>
-      <Route path='/profile' element={userData ? <Profile /> : <Navigate to="/login" />}/>
+      <Route path='/profile/me' element={userData ? <MyProfile /> : <Navigate to="/login" />}/>
+      <Route path='/profile/:username' element={userData ? <UserProfile /> : <Navigate to="/login" />}/>
       {/* <Route path='/feed' element={<Feed />}/> */}
       <Route path='/login' element={userData ? <Navigate to="/feed" /> : <Login/>}/>
       <Route path='/register' element={userData ? <Navigate to="/feed" /> : <Register/>}/>
+      <Route path='/my-posts' element={userData ? <MyPosts /> : <Navigate to="/login" />}/>
     </Routes>
   </div>
 }

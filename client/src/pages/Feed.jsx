@@ -1,6 +1,6 @@
 
 import { useContext, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { userDataContext } from '../context/UserContext'
 import { authDataContext } from '../context/AuthContext'
@@ -15,12 +15,15 @@ import EditProfile from '../components/EditProfile'
 import dp from '../assets/dp.jpg'
 import CreatePost from '../components/CreatePost'
 import PostCard from '../components/PostCard'
+import { useEffect } from 'react'
+import ConnectionBtn from '../components/ConnectionBtn'
 
 const Feed = () => {
   const { userData, setUserData, edit, setEdit, startPost, setStartPost, posts, setPosts } = useContext(userDataContext)
   let { serverUrl } = useContext(authDataContext)
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
+  const [suggestedUser, setSuggestedUser] = useState([])
   const frontendProfileImg = userData?.profileImage || dp
   const frontendCoverImg = userData?.coverImage || ''
 
@@ -38,23 +41,37 @@ const Feed = () => {
     }
   }
 
+  const handleGetSuggestedUser = async () => {
+    try {
+      let res = await axios.get(`${serverUrl}/api/user/suggested-user`, { withCredentials: true })
+      console.log(res.data)
+      setSuggestedUser(res.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    handleGetSuggestedUser()
+  }, [])
+
   return (
-    <div className='px-2 md:px-10 bg-[#F4F2EE] min-h-screen w-full flex flex-col md:flex-row items-start justify-center gap-4 md:gap-5 pt-14 lg:pt-20'>
+    <div className='px-2 md:px-8 bg-[#F4F2EE] min-h-screen w-full flex flex-col md:flex-row items-start justify-center gap-4 md:gap-5 pt-14 lg:pt-20'>
 
       <TopBar2 />
       {edit && <EditProfile />}
 
       {/* Profile Card */}
-      <div className="w-full md:w-[20%] relative md:fixed left-0 md:left-10">
+      <div className="w-full md:w-[20%] relative md:fixed left-0 md:left-14">
         <div className="w-full min-h-50 bg-white shadow-sm rounded-lg  pb-2">
           {/* Cover Image */}
           <div className="w-full h-28 bg-gray-500 rounded-t-lg overflow-hidden">
-            <img src={frontendCoverImg} alt="" className="w-full h-full bg-cover rounded" />
+            <img src={frontendCoverImg} alt="" className="w-full h-full object-cover object-center rounded" />
           </div>
 
           {/* Profile Image */}
           <div className="h-20 w-20 rounded-full absolute top-16 left-8">
-            <img src={frontendProfileImg} alt="" className="w-full h-full bg-cover rounded-full" />
+            <img src={frontendProfileImg} alt="" className="w-full h-full object-cover rounded-full" />
           </div>
 
           <h1 className="mt-10 ml-4 font-semibold">{userData?.firstName ? `${userData.firstName} ${userData.lastName}` : 'Loading...'}</h1>
@@ -91,7 +108,7 @@ const Feed = () => {
       </div>
 
       {startPost && <CreatePost />}
-      <div className="ml-0 md:ml-[20%] w-full md:w-[50%] min-h-50 bg-[#F4F2EE] rounded-lg p-1 flex flex-col gap-5">
+      <div className="ml-0 md:ml-[22%] w-full md:w-[50%] min-h-50 bg-[#F4F2EE] rounded-lg p-1 flex flex-col gap-5">
 
         {/* Start a Post Button */}
         <div className="flex items-center justify-center gap-4 w-full bg-white px-2 py-4 rounded-lg shadow-sm">
@@ -113,7 +130,25 @@ const Feed = () => {
 
       </div>
 
-      <div className="w-full md:w-[20%] min-h-50 bg-white shadow-sm rounded-lg p-2">news or connections</div>
+      <div className="w-full md:w-[22%] min-h-50 bg-white shadow-sm rounded-lg py-2 hidden md:flex flex-col gap-4">
+        <h1 className="text-gray-600 font-bold text-lg ml-4">Suggestions</h1>
+        {suggestedUser.length > 0 && suggestedUser.map((user, i) => (
+          <div key={i} className="flex items-start justify-between px-4">
+            <Link to={`/profile/${user.username}`} className="flex gap-3 items-start cursor-pointer">
+              <div className="h-12 w-12 rounded-full">
+                <img src={user.profileImage || dp} alt="" className="w-full h-full object-cover rounded-full" />
+              </div>
+              <div className="">
+                <h1 className="text-base font-semibold">{user.firstName + ' ' + user.lastName}</h1>
+                <h3 className="text-gray-600 text-xs -mt-1">{user.headline}</h3>
+              </div>
+            </Link>
+            <div className="px-2">
+              {userData._id != user._id && <ConnectionBtn postAuthorId={user._id} />}
+            </div>
+          </div>
+        ))}
+      </div>
 
 
     </div>

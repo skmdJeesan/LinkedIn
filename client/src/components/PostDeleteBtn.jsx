@@ -9,8 +9,6 @@ import { userDataContext } from '../context/UserContext'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-//const socket = io("https://linkedin-server-zgza.onrender.com");
-
 const PostDeleteBtn = ({postId}) => {
   const navigate = useNavigate()
   const {serverUrl} = useContext(authDataContext)
@@ -24,18 +22,6 @@ const PostDeleteBtn = ({postId}) => {
       console.log(error)
     }
   }
-
-  // useEffect(() => {
-  //   if (userData?._id) socket.emit('register', userData._id)
-  //   const handler = ({updatedUserId, newStatus}) => {
-  //     if(updatedUserId == postAuthorId) setStatus(newStatus)
-  //   }
-  //   socket.on('statusUpdate', handler)
-  //   handleGetStatus()
-  //   return () => {
-  //     socket.off('statusUpdate', handler)
-  //   }
-  // }, [postAuthorId, userData?._id])
 
   return (
     <button onClick={handleRemovePost} disabled={status == 'pending'}

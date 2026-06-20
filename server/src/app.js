@@ -17,7 +17,7 @@ const app = express();
 const server = http.createServer(app)
 export const io = new Server(server, {
   cors: {
-    origin: "https://linkedin-client-pe4j.onrender.com",
+    origin: process.env.CLIENT_BASE_URL,
     credentials: true,
   },
 });

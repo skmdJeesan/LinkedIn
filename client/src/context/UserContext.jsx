@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { io } from "socket.io-client";
 
-export const socket = io("https://linkedin-server-zgza.onrender.com");
+export const socket = io(import.meta.env.VITE_SERVER_BASE_URL);
 export const userDataContext = createContext();
 const UserContext = ({ children }) => {
   const serverUrl = useContext(authDataContext).serverUrl

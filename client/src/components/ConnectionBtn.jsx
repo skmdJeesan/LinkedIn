@@ -2,14 +2,11 @@ import { Plus } from 'lucide-react'
 import React from 'react'
 import { useContext } from 'react'
 import { authDataContext } from '../context/AuthContext'
+import { socket, userDataContext } from '../context/UserContext'
 import axios from 'axios'
-import { io } from 'socket.io-client'
 import { useEffect } from 'react'
-import { userDataContext } from '../context/UserContext'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-
-const socket = io("https://linkedin-server-zgza.onrender.com");
 
 const ConnectionBtn = ({postAuthorId}) => {
   const navigate = useNavigate()

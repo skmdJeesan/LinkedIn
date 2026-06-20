@@ -3,7 +3,7 @@ import { createContext } from 'react';
 
 export const authDataContext = createContext();
 const AuthContext = ({children}) => {
-  const serverUrl = 'https://linkedin-server-zgza.onrender.com'
+  const serverUrl = import.meta.env.VITE_SERVER_BASE_URL
   let value = {
     serverUrl
   }

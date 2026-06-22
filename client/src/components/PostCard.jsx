@@ -74,7 +74,7 @@ const PostCard = ({ post }) => {
                     </div>
                     <div className="">
                         <h1 className="text-lg font-semibold">{author.firstName + ' ' + author.lastName}</h1>
-                        <h3 className="text-gray-600 text-base -mt-1">{user.headline.slice(0,20)}{user.headline.length > 20 ? '...' : ''}</h3>
+                        <h3 className="text-gray-600 text-base -mt-1">{author.headline}</h3>
                         <p className="text-xs -mt-1">{moment(post.createdAt).fromNow()}</p>
                     </div>
                 </Link>
@@ -121,7 +121,7 @@ const PostCard = ({ post }) => {
                 <div className="flex flex-col gap-2 mt-2">
                     {comments.map((c, i) => (
                         <div key={i} className="flex flex-col gap-1 mt-4 border-b border-b-gray-400 rounded-lg">
-                            <Link to={`/profile/${c.user?.username}`} className="flex items-start justify-between px-1">
+                            <div className="flex items-start justify-between px-1">
                                 <div className="flex gap-2 items-start cursor-pointer" onClick={() => handleGetProfile(author.username)}>
                                     <div className="h-10 w-10 rounded-full">
                                         <img src={c.user?.profileImage || dp} alt="" className="w-full h-full object-cover object-center rounded-full" />
@@ -135,7 +135,7 @@ const PostCard = ({ post }) => {
                                 <div className="">
                                     {userData._id != c.user._id && <ConnectionBtn postAuthorId={author._id}/>}
                                 </div>
-                            </Link>
+                            </div>
                             <div className="text-sm p-1 ml-8">{c.content}</div>
                         </div>
                     ))}

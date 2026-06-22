@@ -55,6 +55,8 @@ const Feed = () => {
     handleGetSuggestedUser()
   }, [])
 
+  const currentUserId = userData?._id
+
   return (
     <div className='px-2 md:px-8 bg-[#F4F2EE] min-h-screen w-full flex flex-col items-center pt-16 lg:pt-20'>
 
@@ -134,17 +136,17 @@ const Feed = () => {
         <h1 className="text-gray-600 font-bold text-lg ml-4">Suggestions</h1>
         {suggestedUser.length > 0 && suggestedUser.map((user, i) => (
           <div key={i} className="flex items-start justify-between px-4">
-            <Link to={`/profile/${user.username}`} className="flex gap-3 items-start cursor-pointer">
+            <Link to={`/profile/${user.username}`} className="flex gap-2 items-start cursor-pointer">
               <div className="h-12 w-12 rounded-full">
                 <img src={user.profileImage || dp} alt="" className="w-full h-full object-cover rounded-full" />
               </div>
               <div className="">
                 <h1 className="text-base font-semibold">{user.firstName + ' ' + user.lastName}</h1>
-                <h3 className="text-gray-600 text-xs -mt-1">{user.headline}</h3>
+                <h3 className="text-gray-600 text-xs -mt-1">{user.headline.slice(0,20)}{user.headline.length > 20 ? '...' : ''}</h3>
               </div>
             </Link>
             <div className="px-2">
-              {userData._id != user._id && <ConnectionBtn postAuthorId={user._id} />}
+              {currentUserId && currentUserId !== user._id && <ConnectionBtn postAuthorId={user._id} />}
             </div>
           </div>
         ))}

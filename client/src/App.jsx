@@ -15,6 +15,8 @@ import Messaging from './pages/Messaging'
 import Jobs from './pages/Jobs'
 import CheckEmail from './components/CheckEmail'
 import VerifyEmail from './pages/VerifyEmail'
+import ForgetPass from './pages/ForgetPass'
+import ResetPass from './pages/ResetPass'
 
 function App() {
   const { userData, authLoading } = useContext(userDataContext)
@@ -39,6 +41,8 @@ function App() {
       <Route path='/my-posts' element={authProtect(<MyPosts />)} />
       <Route path="/verify-email/:verifyToken" element={<VerifyEmail />} />
       <Route path="/check-email" element={<CheckEmail />} />
+      <Route path="/reset-password/:resetToken" element={<ResetPass />} />
+      <Route path="/forget-password/" element={<ForgetPass />} />
     </Routes>
   </div>
 }

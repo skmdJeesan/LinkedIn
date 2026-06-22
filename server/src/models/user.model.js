@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
   skills: [{type: String}],
   education: [{college: {type: String}, degree: {type: String}, fieldOfStudy: {type: String}}],
   location: {type: String, default: 'India'},
-  gender: {type: String, enum: ['male', 'female', 'other']},
+  gender: {type: String, enum: ['Male', 'Female', 'Other']},
   experience: [{title: {type: String}, company: {type: String}, description: {type: String}}],
   connection: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
   resetPasswordToken: { type: String },
@@ -20,6 +20,8 @@ const userSchema = new mongoose.Schema({
   isVerified: { type: Boolean, default: false },
   verifyToken: { type: String, required: false, },
   verifyTokenExpires: { type: Date },
+  resetPasswordToken: {type: String},
+  resetPasswordExpires: {type: Date}
 }, {timestamps: true});
 
 const User = mongoose.model("User", userSchema);

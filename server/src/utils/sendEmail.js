@@ -22,15 +22,36 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-export const sendVerificationEmail = async (email, verificationUrl) => {
+export const sendVerificationEmail = async (
+  email,
+  verificationUrl
+) => {
   await transporter.sendMail({
-    from: emailUser,
+    from: `"LinkedIn Clone" <${process.env.EMAIL_USER}>`,
     to: email,
     subject: "Verify Your Email",
     html: `
-        <h2>Email Verification</h2>
-        <p>Click below to verify your account:</p>
-        <a href="${verificationUrl}">Verify Email</a>
-      `
+            <h2>Verify Your Email</h2>
+            <a href="${verificationUrl}">
+                Verify Email
+            </a>
+        `
   });
-};  
+};
+
+export const sendResetPasswordEmail = async (
+  email,
+  resetUrl
+) => {
+  await transporter.sendMail({
+    from: `"LinkedIn Clone" <${process.env.EMAIL_USER}>`,
+    to: email,
+    subject: "Reset Password",
+    html: `
+            <h2>Reset Password</h2>
+            <a href="${resetUrl}">
+                Reset Password
+            </a>
+        `
+  });
+};

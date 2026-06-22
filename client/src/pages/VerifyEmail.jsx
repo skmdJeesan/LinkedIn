@@ -22,7 +22,7 @@ function VerifyEmail() {
   }, [verifyToken, navigate, serverUrl]);
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center w-full h-screen">
       <div className="flex items-center gap-1">
         <Loader2 size={20} className="animate-spin" />
         <h2>Verifying email...</h2>

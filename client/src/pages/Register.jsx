@@ -41,6 +41,14 @@ export default function Register() {
     }
   }
 
+  // const handleGoogleLogin = async () => {
+  //   try {
+      
+  //   } catch (error) {
+      
+  //   }
+  // }
+
   return (
     <div className="min-h-screen">
       <div className="px-4 md:px-10 py-2 md:py-4 cursor-pointer" onClick={() => navigate('/')}>
@@ -138,6 +146,7 @@ export default function Register() {
 
           {/* Google Button */}
           <button
+            // onClick={handleGoogleLogin}
             type="button"
             className="w-full h-12 border rounded-full flex items-center justify-center gap-3 hover:bg-gray-50 cursor-pointer"
           >

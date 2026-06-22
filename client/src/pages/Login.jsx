@@ -10,7 +10,7 @@ import { Loader2 } from "lucide-react";
 export default function Login() {
     const navigate = useNavigate();
     let { serverUrl } = useContext(authDataContext)
-    const { setUserData } = useContext(userDataContext)
+    const { setUserData, fetchUserData, fetchAllPosts } = useContext(userDataContext)
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -30,6 +30,7 @@ export default function Login() {
             setPassword("")
             // update global user data so protected routes allow access
             setUserData(res.data.user)
+            await Promise.all([fetchUserData(), fetchAllPosts()])
             navigate('/feed')
         } catch (error) {
             setError(error.response?.data?.message || error.message || 'Login failed')
@@ -83,6 +84,13 @@ export default function Login() {
                         <p className="text-sm text-[#0A66C2] font-semibold cursor-pointer absolute right-2 top-4" onClick={() => setShowPassword(!showPassword)}>
                             {showPassword ? "Hide" : "Show"}
                         </p>
+                    </div>
+
+                    <div className="flex items-center justify-end px-2 -mt-3">
+                        <h3 onClick={() => navigate('/forget-password')} 
+                            className="text-blue-500 hover:underline cursor-pointer text-sm">
+                            Forget Password?
+                        </h3>
                     </div>
 
                     {/* Terms */}

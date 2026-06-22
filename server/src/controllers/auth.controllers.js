@@ -52,38 +52,24 @@ export const register = async (req, res) => {
     await sendVerificationEmail(user.email, verificationUrl);
     await user.save();
 
-    // Generate JWT
-    const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
-
-    // parse the token in cookies
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "none",
-      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-    });
-
-    // Send response
+    // Send response without logging in the user.
     res.status(201).json({
       success: true,
-      message: "User registered successfully.",
-      user: {
-        id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        username: user.username,
-        email: user.email
-      }
+      message: "User registered successfully. Please check your email to verify your account."
     });
 
   } catch (error) {
+    console.error("Register error:", error);
+    if (error.code === 11000) {
+      return res.status(409).json({
+        success: false,
+        message: "Email or username already exists."
+      });
+    }
+
     res.status(500).json({
       success: false,
-      message: "Server error. Please try again later."
+      message: error.message || "Server error. Please try again later."
     });
   }
 };
@@ -110,6 +96,13 @@ export const login = async (req, res) => {
       });
     }
 
+    if (!user.isVerified) {
+      return res.status(401).json({
+        success: false,
+        message: "Please verify your email before logging in."
+      });
+    }
+
     // Check if password is correct
     const isMatch = await bcrypt.compare(password, user.password);
 
@@ -131,7 +124,7 @@ export const login = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "none",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     });
 
@@ -171,17 +164,19 @@ export const logout = (req, res) => {
 export const verifyEmail = async (req, res) => {
   try {
     const { verifyToken } = req.params;
-    const user = await User.findOne({ verifyToken: token });
+    const user = await User.findOne({ verifyToken });
 
-    if (!user)
-      return res.status(400).json({message: "Invalid token"});
+    if (!user) {
+      return res.status(400).json({ message: "Invalid token" });
+    }
 
     user.isVerified = true;
-    user.verificationToken = undefined;
+    user.verifyToken = undefined;
+    user.verifyTokenExpires = undefined;
 
     await user.save();
-    res.status(200).json({message: "Email verified"});
+    res.status(200).json({ message: "Email verified" });
   } catch (error) {
-    res.status(200).json({ message: `Email verification error: ${error}`});
+    res.status(500).json({ message: `Email verification error: ${error}` });
   }
 };

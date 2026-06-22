@@ -34,11 +34,10 @@ export default function Register() {
       setUsername("")
       setEmail("")
       setPassword("")
-      setUserData(res.data.user)
       navigate('/check-email')
     } catch (error) {
-      setError(error.response.data.message)
-      setLoading(false)
+      setError(error.response?.data?.message || error.message || 'Registration failed');
+      setLoading(false);
     }
   }
 

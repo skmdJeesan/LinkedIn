@@ -17,21 +17,26 @@ import CheckEmail from './components/CheckEmail'
 import VerifyEmail from './pages/VerifyEmail'
 
 function App() {
-  const userData = useContext(userDataContext).userData
+  const { userData, authLoading } = useContext(userDataContext)
+
+  const authProtect = (component) => {
+    if (authLoading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>
+    return userData ? component : <Navigate to="/login" />
+  }
+
   return <div>
     <Routes >
       <Route path='/' element={<Home />} />
-      <Route path='/feed' element={userData ? <Feed /> : <Navigate to="/login" />} />
-      <Route path='/network' element={userData ? <Network /> : <Navigate to="/login" />} />
-      <Route path='/notification' element={userData ? <Notification /> : <Navigate to="/login" />} />
-      <Route path='/messaging' element={userData ? <Messaging /> : <Navigate to="/login" />} />
-      <Route path='/jobs' element={userData ? <Jobs /> : <Navigate to="/login" />} />
-      <Route path='/profile/me' element={userData ? <MyProfile /> : <Navigate to="/login" />} />
-      <Route path='/profile/:username' element={userData ? <UserProfile /> : <Navigate to="/login" />} />
-      {/* <Route path='/feed' element={<Feed />}/> */}
+      <Route path='/feed' element={authProtect(<Feed />)} />
+      <Route path='/network' element={authProtect(<Network />)} />
+      <Route path='/notification' element={authProtect(<Notification />)} />
+      <Route path='/messaging' element={authProtect(<Messaging />)} />
+      <Route path='/jobs' element={authProtect(<Jobs />)} />
+      <Route path='/profile/me' element={authProtect(<MyProfile />)} />
+      <Route path='/profile/:username' element={authProtect(<UserProfile />)} />
       <Route path='/login' element={userData ? <Navigate to="/feed" /> : <Login />} />
       <Route path='/register' element={userData ? <Navigate to="/feed" /> : <Register />} />
-      <Route path='/my-posts' element={userData ? <MyPosts /> : <Navigate to="/login" />} />
+      <Route path='/my-posts' element={authProtect(<MyPosts />)} />
       <Route path="/verify-email/:verifyToken" element={<VerifyEmail />} />
       <Route path="/check-email" element={<CheckEmail />} />
     </Routes>

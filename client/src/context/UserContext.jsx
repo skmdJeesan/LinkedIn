@@ -11,6 +11,7 @@ export const userDataContext = createContext();
 const UserContext = ({ children }) => {
   const serverUrl = useContext(authDataContext).serverUrl
   const [userData, setUserData] = useState(null)
+  const [authLoading, setAuthLoading] = useState(true)
   const [edit, setEdit] = useState(false)
   const [startPost, setStartPost] = useState(false)
   const [posts, setPosts] = useState([])
@@ -22,7 +23,9 @@ const UserContext = ({ children }) => {
       setUserData(res.data);
     } catch (error) {
       console.error('Error fetching user data:', error);
-      setUserData(null); // Set userData to null if there's an error fetching data
+      setUserData(null);
+    } finally {
+      setAuthLoading(false);
     }
   };
 
@@ -41,7 +44,7 @@ const UserContext = ({ children }) => {
     fetchAllPosts();
   }, []);
 
-  let value = { userData, setUserData, edit, setEdit, startPost, setStartPost, posts, setPosts, fetchAllPosts }
+  let value = { userData, authLoading, setUserData, edit, setEdit, startPost, setStartPost, posts, setPosts, fetchAllPosts }
 
   return (
     <div>

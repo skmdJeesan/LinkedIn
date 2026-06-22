@@ -82,26 +82,21 @@ export const comment = async (req, res) => {
     let userId = req.userId
     let { content } = req.body
 
-    let post = await Post.findById(postId)
-    if (!post) return res.status(404).json({ message: 'post not found!' })
-
-    post.comment.push({ content, user: userId })
-    await post.save()
-
-    post = await Post.findById(postId).populate({
+    let post = await Post.findByIdAndUpdate(postId, {
+      $push: { comment: { content, user: userId } }
+    }, { new: true }).populate({
       path: 'comment.user',
       select: 'firstName lastName profileImage headline'
-    })
-
+    }).sort({ updatedAt: -1 })
     if(post.author != userId) {
       await Notification.create({
-        receiver: post.author,
-        relatedUser: userId,
-        relatedPost: postId,
-        type: 'comment'
-      })
+      receiver: post.author,
+      relatedUser: userId,
+      relatedPost: postId,
+      type: 'comment'
+    })
     }
-
+    await post.save()
     io.emit('commentUpdated', { postId, comments: post.comment })
     return res.status(200).json(post)
   } catch (error) {
